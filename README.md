@@ -10,6 +10,14 @@ extension JSONDecoder {
     }
 }
 
+let json = """
+{
+    "firstName": "Albert",
+    "lastName": "Einstein",
+    "age": 28
+}
+"""
+
 let person: Result<Person, DecodingError> = JSONDecoder().decode(Person.self, from: json.data(using: .utf8)!)
 
 switch person {
