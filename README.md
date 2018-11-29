@@ -1,5 +1,7 @@
 # SwiftResult
 
+[![Build Status](https://travis-ci.org/koher/SwiftResult.svg?branch=master)](https://travis-ci.org/koher/SwiftResult)
+
 _SwiftResult_ provides a `Result` type which is compatible with the `Result` type proposed in [SE-0235](https://github.com/apple/swift-evolution/blob/master/proposals/0235-add-result.md), which may be added to the Swift standard library in Swift 5.x. Replacing third-party `Result` types with it may make it easier to migrate your code to Swift 5.x.
 
 ```swift
