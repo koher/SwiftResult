@@ -25,7 +25,7 @@ let person: Result<Person, DecodingError> = JSONDecoder().decode(Person.self, fr
 switch person {
 case .value(let person):
     ... // Success
-case .error(_):
+case .error(let error):
     ... // Failure
 }
 
