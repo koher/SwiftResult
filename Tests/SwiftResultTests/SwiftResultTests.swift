@@ -64,7 +64,7 @@ final class SwiftResultTests: XCTestCase {
             let r: Int = try a.unwrapped()
             XCTAssertEqual(r, 3)
         } catch let error {
-            XCTFail("\(error)")
+            XCTFail("\(type(of: error)): \(error)")
         }
         
         do {
@@ -74,7 +74,7 @@ final class SwiftResultTests: XCTestCase {
         } catch let error as Error1 {
             XCTAssertEqual(error, Error1(a: 42))
         } catch let error {
-            XCTFail("\(error)")
+            XCTFail("\(type(of: error)): \(error)")
         }
     }
     
@@ -86,7 +86,7 @@ final class SwiftResultTests: XCTestCase {
             case .value(let value):
                 XCTAssertEqual(value, [42])
             case .error(let error):
-                XCTFail("\(error)")
+                XCTFail("\(type(of: error)): \(error)")
             }
         }
         
@@ -99,7 +99,7 @@ final class SwiftResultTests: XCTestCase {
             case .error(DecodingError.dataCorrupted(let context)):
                 XCTAssertTrue(context.codingPath.isEmpty)
             case .error(let error):
-                XCTFail("\(error)")
+                XCTFail("\(type(of: error)): \(error)")
             }
         }
     }
