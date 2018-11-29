@@ -31,6 +31,25 @@ let age: Result<Int, DecodingError> = person.map { $0.age }
 try! age.unwrapped() // 28
 ```
 
+## Installation
+
+### Swift Package Manager
+
+Add the following to `dependencies` in your _Package.swift_.
+
+```swift
+.package(
+    url: "https://github.com/koher/SwiftResult.git",
+    from: "0.1.0"
+)
+```
+
+### Carthage
+
+```
+github "koher/SwiftResult" ~> 0.1.0
+```
+
 ## License
 
 [Apache License](LICENSE.txt). It follows [Swift's license](https://github.com/apple/swift/blob/master/LICENSE.txt) and [Swift Evolution's license](https://github.com/apple/swift-evolution/blob/master/LICENSE.txt).
