@@ -4,72 +4,72 @@ import XCTest
 final class SwiftResultTests: XCTestCase {
     func testMap() {
         do {
-            let a: Result<Int, Error1> = .value(3)
+            let a: Result<Int, Error1> = .success(3)
             let r: Result<Double, Error1> = a.map { Double($0 * $0) }
-            XCTAssertEqual(r, .value(9.0))
+            XCTAssertEqual(r, .success(9.0))
         }
         
         do {
-            let a: Result<Int, Error1> = .error(Error1(a: 42))
+            let a: Result<Int, Error1> = .failure(Error1(a: 42))
             let r: Result<Double, Error1> = a.map { Double($0 * $0) }
-            XCTAssertEqual(r, .error(Error1(a: 42)))
+            XCTAssertEqual(r, .failure(Error1(a: 42)))
         }
     }
     
     func testMapError() {
         do {
-            let a: Result<Int, Error1> = .value(3)
+            let a: Result<Int, Error1> = .success(3)
             let r: Result<Int, Error2> = a.mapError { e in Error2(b: e.a >= 0) }
-            XCTAssertEqual(r, .value(3))
+            XCTAssertEqual(r, .success(3))
         }
         
         do {
-            let a: Result<Int, Error1> = .error(Error1(a: 42))
+            let a: Result<Int, Error1> = .failure(Error1(a: 42))
             let r: Result<Int, Error2> = a.mapError { e in Error2(b: e.a >= 0) }
-            XCTAssertEqual(r, .error(Error2(b: true)))
+            XCTAssertEqual(r, .failure(Error2(b: true)))
         }
     }
     
     func testFlatMap() {
         do {
-            let a: Result<Int, Error1> = .value(3)
-            let r: Result<Double, Error1> = a.flatMap { .value(Double($0 * $0)) }
-            XCTAssertEqual(r, .value(9.0))
+            let a: Result<Int, Error1> = .success(3)
+            let r: Result<Double, Error1> = a.flatMap { .success(Double($0 * $0)) }
+            XCTAssertEqual(r, .success(9.0))
         }
         
         do {
-            let a: Result<Int, Error1> = .error(Error1(a: 42))
-            let r: Result<Double, Error1> = a.flatMap { .value(Double($0 * $0)) }
-            XCTAssertEqual(r, .error(Error1(a: 42)))
+            let a: Result<Int, Error1> = .failure(Error1(a: 42))
+            let r: Result<Double, Error1> = a.flatMap { .success(Double($0 * $0)) }
+            XCTAssertEqual(r, .failure(Error1(a: 42)))
         }
     }
     
     func testFlatMapError() {
         do {
-            let a: Result<Int, Error1> = .value(3)
-            let r: Result<Int, Error2> = a.flatMapError { e in .error(Error2(b: e.a >= 0)) }
-            XCTAssertEqual(r, .value(3))
+            let a: Result<Int, Error1> = .success(3)
+            let r: Result<Int, Error2> = a.flatMapError { e in .failure(Error2(b: e.a >= 0)) }
+            XCTAssertEqual(r, .success(3))
         }
         
         do {
-            let a: Result<Int, Error1> = .error(Error1(a: 42))
-            let r: Result<Int, Error2> = a.flatMapError { e in .error(Error2(b: e.a >= 0)) }
-            XCTAssertEqual(r, .error(Error2(b: true)))
+            let a: Result<Int, Error1> = .failure(Error1(a: 42))
+            let r: Result<Int, Error2> = a.flatMapError { e in .failure(Error2(b: e.a >= 0)) }
+            XCTAssertEqual(r, .failure(Error2(b: true)))
         }
     }
     
     func testUnwrapped() {
         do {
-            let a: Result<Int, Error1> = .value(3)
-            let r: Int = try a.unwrapped()
+            let a: Result<Int, Error1> = .success(3)
+            let r: Int = try a.get()
             XCTAssertEqual(r, 3)
         } catch let error {
             XCTFail("\(type(of: error)): \(error)")
         }
         
         do {
-            let a: Result<Int, Error1> = .error(Error1(a: 42))
-            let r: Int = try a.unwrapped()
+            let a: Result<Int, Error1> = .failure(Error1(a: 42))
+            let r: Int = try a.get()
             XCTFail("\(r)")
         } catch let error as Error1 {
             XCTAssertEqual(error, Error1(a: 42))
@@ -83,9 +83,9 @@ final class SwiftResultTests: XCTestCase {
             let jsonData: Data = "[42]".data(using: .utf8)!
             let result = Result<[Int], Error> { try JSONDecoder().decode([Int].self, from: jsonData) }
             switch result {
-            case .value(let value):
+            case .success(let value):
                 XCTAssertEqual(value, [42])
-            case .error(let error):
+            case .failure(let error):
                 XCTFail("\(type(of: error)): \(error)")
             }
         }
@@ -94,11 +94,11 @@ final class SwiftResultTests: XCTestCase {
             let jsonData: Data = "".data(using: .utf8)!
             let result = Result<[Int], Error> { try JSONDecoder().decode([Int].self, from: jsonData) }
             switch result {
-            case .value(let value):
+            case .success(let value):
                 XCTFail("\(value)")
-            case .error(DecodingError.dataCorrupted(let context)):
+            case .failure(DecodingError.dataCorrupted(let context)):
                 XCTAssertTrue(context.codingPath.isEmpty)
-            case .error(let error):
+            case .failure(let error):
                 XCTFail("\(type(of: error)): \(error)")
             }
         }
@@ -116,14 +116,14 @@ final class SwiftResultTests: XCTestCase {
         let person: Result<Person, DecodingError> = JSONDecoder().decode(Person.self, from: json.data(using: .utf8)!)
         
         switch person {
-        case .value(let person):
+        case .success(let person):
             XCTAssertEqual(person.age, 28)
-        case .error(_):
+        case .failure(_):
             XCTFail()
         }
         
         let age: Result<Int, DecodingError> = person.map { $0.age }
-        XCTAssertEqual(try! age.unwrapped(), 28)
+        XCTAssertEqual(try! age.get(), 28)
     }
 
     static var allTests = [
@@ -146,9 +146,9 @@ struct Person: Codable {
 extension JSONDecoder {
     func decode<T: Decodable>(_ type: T.Type, from data: Data) -> Result<T, DecodingError> {
         do {
-            return .value(try self.decode(T.self, from: data))
+            return .success(try self.decode(T.self, from: data))
         } catch let error as DecodingError {
-            return .error(error)
+            return .failure(error)
         } catch _ {
             preconditionFailure()
         }

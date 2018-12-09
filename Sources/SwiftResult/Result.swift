@@ -1,11 +1,11 @@
 /// A value that represents either a success or failure, capturing associated
 /// values in both cases.
-public enum Result<Value, Error/*: Swift.Error*/> {
+public enum Result<Success, Failure/*: Error*/> {
     /// A normal result, storing a `Value`.
-    case value(Value)
+    case success(Success)
     
     /// An error result, storing an `Error`.
-    case error(Error)
+    case failure(Failure)
     
     /// Evaluates the given transform closure when this `Result` instance is
     /// `.success`, passing the value as a parameter.
@@ -17,13 +17,13 @@ public enum Result<Value, Error/*: Swift.Error*/> {
     /// - Returns: A new `Result` instance with the result of the transform, if
     ///   it was applied.
     public func map<NewValue>(
-        _ transform: (Value) -> NewValue
-    ) -> Result<NewValue, Error> {
+        _ transform: (Success) -> NewValue
+    ) -> Result<NewValue, Failure> {
         switch self {
-        case .value(let value):
-            return .value(transform(value))
-        case .error(let error):
-            return .error(error)
+        case .success(let value):
+            return .success(transform(value))
+        case .failure(let error):
+            return .failure(error)
         }
     }
     
@@ -38,13 +38,13 @@ public enum Result<Value, Error/*: Swift.Error*/> {
     /// - Returns: A new `Result` instance with the result of the transform, if
     ///   it was applied.
     public func mapError<NewError>(
-        _ transform: (Error) -> NewError
-    ) -> Result<Value, NewError> {
+        _ transform: (Failure) -> NewError
+    ) -> Result<Success, NewError> {
         switch self {
-        case .value(let value):
-            return .value(value)
-        case .error(let error):
-            return .error(transform(error))
+        case .success(let value):
+            return .success(value)
+        case .failure(let error):
+            return .failure(transform(error))
         }
     }
     
@@ -56,13 +56,13 @@ public enum Result<Value, Error/*: Swift.Error*/> {
     /// - Returns: A new `Result` instance, either from the transform or from
     ///   the previous error value.
     public func flatMap<NewValue>(
-        _ transform: (Value) -> Result<NewValue, Error>
-    ) -> Result<NewValue, Error> {
+        _ transform: (Success) -> Result<NewValue, Failure>
+    ) -> Result<NewValue, Failure> {
         switch self {
-        case .value(let value):
+        case .success(let value):
             return transform(value)
-        case .error(let error):
-            return .error(error)
+        case .failure(let error):
+            return .failure(error)
         }
     }
     
@@ -74,46 +74,46 @@ public enum Result<Value, Error/*: Swift.Error*/> {
     /// - Returns: A new `Result` instance, either from the transform or from
     ///   the previous success value.
     public func flatMapError<NewError>(
-        _ transform: (Error) -> Result<Value, NewError>
-    ) -> Result<Value, NewError> {
+        _ transform: (Failure) -> Result<Success, NewError>
+    ) -> Result<Success, NewError> {
         switch self {
-        case .value(let value):
-            return .value(value)
-        case .error(let error):
+        case .success(let value):
+            return .success(value)
+        case .failure(let error):
             return transform(error)
         }
     }
 }
 
-extension Result where Error: Swift.Error {
+extension Result where Failure: Error {
     /// Unwraps the `Result` into a throwing expression.
     ///
     /// - Returns: The success value, if the instance is a success.
     /// - Throws:  The error value, if the instance is a failure.
-    public func unwrapped() throws -> Value {
+    public func get() throws -> Success {
         switch self {
-        case .value(let value):
+        case .success(let value):
             return value
-        case .error(let error):
+        case .failure(let error):
             throw error
         }
     }
 }
 
-extension Result where Error == Swift.Error {
+extension Result where Failure == Error {
     /// Create an instance by capturing the output of a throwing closure.
     ///
     /// - Parameter throwing: A throwing closure to evaluate.
     @_transparent
-    public init(catching body: () throws -> Value) {
+    public init(catching body: () throws -> Success) {
         do {
-            self = .value(try body())
+            self = .success(try body())
         } catch let error {
-            self = .error(error)
+            self = .failure(error)
         }
     }
 }
 
-extension Result : Equatable where Value : Equatable, Error : Equatable { }
+extension Result : Equatable where Success : Equatable, Failure : Equatable { }
 
-extension Result : Hashable where Value : Hashable, Error : Hashable { }
+extension Result : Hashable where Success : Hashable, Failure : Hashable { }
