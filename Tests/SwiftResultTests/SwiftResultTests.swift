@@ -105,15 +105,13 @@ final class SwiftResultTests: XCTestCase {
     }
     
     func testExample() {
-        let json = """
-        {
-            "firstName": "Albert",
-            "lastName": "Einstein",
-            "age": 28
-        }
-        """
+        let json: JSON = .object([
+            "firstName": .string("Albert"),
+            "lastName": .string("Einstein"),
+            "age": .number(28),
+        ])
         
-        let person: Result<Person, DecodingError> = JSONDecoder().decode(Person.self, from: json.data(using: .utf8)!)
+        let person: Result<Person, DecodingError> = JSONDecoder().decode(Person.self, from: json)
         
         switch person {
         case .success(let person):
@@ -144,9 +142,9 @@ struct Person: Codable {
 }
 
 extension JSONDecoder {
-    func decode<T: Decodable>(_ type: T.Type, from data: Data) -> Result<T, DecodingError> {
+    func decode<T: Decodable>(_ type: T.Type, from json: JSON) -> Result<T, DecodingError> {
         do {
-            return .success(try self.decode(T.self, from: data))
+            return .success(try self.decode(T.self, from: json.data()))
         } catch let error as DecodingError {
             return .failure(error)
         } catch _ {

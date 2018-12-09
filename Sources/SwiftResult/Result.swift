@@ -1,10 +1,10 @@
 /// A value that represents either a success or failure, capturing associated
 /// values in both cases.
 public enum Result<Success, Failure/*: Error*/> {
-    /// A normal result, storing a `Value`.
+    /// A normal result, storing a `Success`.
     case success(Success)
     
-    /// An error result, storing an `Error`.
+    /// An error result, storing an `Failure`.
     case failure(Failure)
     
     /// Evaluates the given transform closure when this `Result` instance is
