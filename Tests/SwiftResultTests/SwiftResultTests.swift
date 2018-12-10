@@ -121,7 +121,12 @@ final class SwiftResultTests: XCTestCase {
         }
         
         let age: Result<Int, DecodingError> = person.map { $0.age }
-        XCTAssertEqual(try! age.get(), 28)
+        do {
+            let age: Int = try age.get()
+            XCTAssertEqual(age, 28)
+        } catch let error {
+            XCTFail("\(error)")
+        }
     }
 
     static var allTests = [

@@ -24,7 +24,12 @@ case .failure(let error):
 }
 
 let age: Result<Int, DecodingError> = person.map { $0.age }
-try! age.get() // 28
+do {
+    let age: Int = try age.get()
+    // Uses `age` here
+} catch let error {
+    // Error handling
+}
 ```
 
 ## Installation
