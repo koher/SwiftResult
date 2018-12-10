@@ -21,6 +21,9 @@
 		D628438321AFB1B4000555D0 /* SwiftResultTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D628437F21AFB1B4000555D0 /* SwiftResultTests.swift */; };
 		D628438421AFB1B4000555D0 /* SwiftResultTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D628437F21AFB1B4000555D0 /* SwiftResultTests.swift */; };
 		D628438521AFB1B4000555D0 /* SwiftResultTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D628437F21AFB1B4000555D0 /* SwiftResultTests.swift */; };
+		D6DA4C4D21BDDA23002CC684 /* JSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6DA4C4C21BDDA23002CC684 /* JSON.swift */; };
+		D6DA4C4E21BDDA23002CC684 /* JSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6DA4C4C21BDDA23002CC684 /* JSON.swift */; };
+		D6DA4C4F21BDDA23002CC684 /* JSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6DA4C4C21BDDA23002CC684 /* JSON.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -60,6 +63,7 @@
 		D628437021AFB1A5000555D0 /* SwiftResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SwiftResult.h; sourceTree = "<group>"; };
 		D628437F21AFB1B4000555D0 /* SwiftResultTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftResultTests.swift; sourceTree = "<group>"; };
 		D628438121AFB1B4000555D0 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D6DA4C4C21BDDA23002CC684 /* JSON.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSON.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -171,6 +175,7 @@
 			isa = PBXGroup;
 			children = (
 				D628437F21AFB1B4000555D0 /* SwiftResultTests.swift */,
+				D6DA4C4C21BDDA23002CC684 /* JSON.swift */,
 				D628438121AFB1B4000555D0 /* Info.plist */,
 			);
 			path = SwiftResultTests;
@@ -462,6 +467,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D628438321AFB1B4000555D0 /* SwiftResultTests.swift in Sources */,
+				D6DA4C4D21BDDA23002CC684 /* JSON.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -478,6 +484,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D628438421AFB1B4000555D0 /* SwiftResultTests.swift in Sources */,
+				D6DA4C4E21BDDA23002CC684 /* JSON.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -494,6 +501,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D628438521AFB1B4000555D0 /* SwiftResultTests.swift in Sources */,
+				D6DA4C4F21BDDA23002CC684 /* JSON.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
