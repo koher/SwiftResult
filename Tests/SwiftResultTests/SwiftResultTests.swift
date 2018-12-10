@@ -116,8 +116,8 @@ final class SwiftResultTests: XCTestCase {
         switch person {
         case .success(let person):
             XCTAssertEqual(person.age, 28)
-        case .failure(_):
-            XCTFail()
+        case .failure(let error):
+            XCTFail("\(error)")
         }
         
         let age: Result<Int, DecodingError> = person.map { $0.age }
